@@ -10,13 +10,13 @@ from movie_recommend.utils.recommendation_algorithms import (
 
 
 def get_recommendations(
-        movie_features_df: pd.DataFrame,
-        movie_to_compare: str,
-        num_recommendations: int,
-        model_type: str,
-        model: object,
-        total_ratings: pd.DataFrame,
-        total_movie_array: List[str],
+    movie_features_df: pd.DataFrame,
+    movie_to_compare: str,
+    num_recommendations: int,
+    model_type: str,
+    model: object,
+    total_ratings: pd.DataFrame,
+    total_movie_array: List[str],
 ) -> Tuple[str, pd.DataFrame]:
     """
     Returns a DataFrame of movie recommendations.

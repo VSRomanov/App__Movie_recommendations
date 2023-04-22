@@ -8,10 +8,10 @@ from sklearn.neighbors import NearestNeighbors
 
 
 def recommendation_rename_movie(
-        movie_to_compare: str,
-        movie_array: List[str],
-        num_recommendations: int,
-        total_ratings: pd.DataFrame,
+    movie_to_compare: str,
+    movie_array: List[str],
+    num_recommendations: int,
+    total_ratings: pd.DataFrame,
 ) -> Tuple[str, pd.DataFrame]:
     """
     Recommends movies based on a partial match to the given movie title and provides
@@ -55,7 +55,7 @@ def recommendation_rename_movie(
 
 
 def knn_train(
-        movie_features_df: pd.DataFrame,
+    movie_features_df: pd.DataFrame,
 ) -> sklearn.neighbors._unsupervised.NearestNeighbors:
     """
     Trains a k-Nearest Neighbors model on a given dataset of movie features using the cosine distance metric.
@@ -77,11 +77,11 @@ def knn_train(
 
 
 def recommendation_knn(
-        movie_features_df: pd.DataFrame,
-        model: NearestNeighbors,
-        movie_to_compare: str,
-        num_recommendations: int,
-        total_ratings: pd.DataFrame,
+    movie_features_df: pd.DataFrame,
+    model: NearestNeighbors,
+    movie_to_compare: str,
+    num_recommendations: int,
+    total_ratings: pd.DataFrame,
 ) -> Tuple[str, pd.DataFrame]:
     """
     Recommends similar movies to a given movie using k-Nearest Neighbors algorithm.
@@ -133,10 +133,10 @@ def recommendation_knn(
 
 
 def recommendation_corr(
-        movie_features_df: pd.DataFrame,
-        movie_to_compare: str,
-        num_recommendations: int,
-        total_ratings: pd.DataFrame,
+    movie_features_df: pd.DataFrame,
+    movie_to_compare: str,
+    num_recommendations: int,
+    total_ratings: pd.DataFrame,
 ) -> Tuple[str, pd.DataFrame]:
     """
     Recommends top movies based on the Pearson correlation between a specified movie and other movies in the dataset.

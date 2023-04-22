@@ -53,7 +53,7 @@ def mean_rating_table(rating_with_totalRatingCount: DataFrame) -> DataFrame:
 
 
 def filter_movies_by_rating_count(
-        rating_with_totalRatingCount: DataFrame, num_rating_threshold: int
+    rating_with_totalRatingCount: DataFrame, num_rating_threshold: int
 ) -> DataFrame:
     """
     Filter the movies by totalRatingCount threshold.
@@ -66,7 +66,7 @@ def filter_movies_by_rating_count(
     rating_movie_per_user = (
         rating_with_totalRatingCount[
             rating_with_totalRatingCount.totalRatingCount.values > num_rating_threshold
-            ]
+        ]
         .copy()
         .reset_index(drop=True)
     )

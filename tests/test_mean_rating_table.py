@@ -50,5 +50,5 @@ def test_mean_rating_table(sample_ratings):
     assert final_table.equals(expected_output)
 
     assert (
-            all(list(final_table["mean_rating"].astype(float))) > 0
+        all(list(final_table["mean_rating"].astype(float))) > 0
     ), "All recommended movies should have a positive rating"

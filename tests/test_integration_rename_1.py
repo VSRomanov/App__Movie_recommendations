@@ -49,13 +49,13 @@ def test_movie_recommendations_rename_1():
     )
 
     assert (
-            first_line == 'No "Terminator" movie in the database. Try the following titles:'
+        first_line == 'No "Terminator" movie in the database. Try the following titles:'
     )
     assert isinstance(final_table, pd.DataFrame) == True
     assert (
-            len(final_table) == num_recommendations
+        len(final_table) == num_recommendations
     ), f"Expected {num_recommendations} recommendations, got {len(final_table)}"
 
     assert (
-            movie_to_compare not in final_table.index
+        movie_to_compare not in final_table.index
     ), f"Expected {movie_to_compare} to be excluded from recommendations"

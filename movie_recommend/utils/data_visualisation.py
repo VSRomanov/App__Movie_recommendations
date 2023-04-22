@@ -6,11 +6,11 @@ from movie_recommend.utils.table_formatting import filter_movies_by_rating_count
 
 
 def ratings_visualisation(
-        total_ratings: DataFrame,
-        dataset_size: str,
-        num_rating_threshold: int,
-        rating_threshold: float,
-        folder_path: str,
+    total_ratings: DataFrame,
+    dataset_size: str,
+    num_rating_threshold: int,
+    rating_threshold: float,
+    folder_path: str,
 ) -> None:
     """
     Generate a joint plot to visualize the relationship between movie ratings and the total rating count
@@ -30,7 +30,7 @@ def ratings_visualisation(
     )
     rating_movie_per_user = rating_movie_per_user[
         rating_movie_per_user["mean_rating"] >= rating_threshold
-        ]
+    ]
     # print(rating_movie_per_user.head(20))
 
     # Create output folder if it does not exist

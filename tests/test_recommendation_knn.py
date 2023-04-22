@@ -104,8 +104,8 @@ def sample_data():
     table.sort_values(by="distance", ascending=True, inplace=True)
 
     expected_output = table.loc[
-                      :, ["title", "mean_rating", "totalRatingCount", "distance"]
-                      ]
+        :, ["title", "mean_rating", "totalRatingCount", "distance"]
+    ]
     # print(expected_output)
 
     return (

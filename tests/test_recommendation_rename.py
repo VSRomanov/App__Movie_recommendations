@@ -74,5 +74,5 @@ def test_recommendation_rename_movie(sample_total_ratings):
     assert isinstance(result_table, pd.DataFrame) == True
     assert_frame_equal(result_table, expected_table, check_dtype=True)
     assert (
-            len(result_table) == num_recommendations
+        len(result_table) == num_recommendations
     ), f"Expected {num_recommendations} recommendations, got {len(result_table)}"

@@ -67,8 +67,8 @@ def sample_data():
     data_transposed = data_transposed.rename(columns={"index": "title"})
 
     expected_output = data_transposed.loc[
-                      :, ["title", "mean_rating", "totalRatingCount", "correlation"]
-                      ]
+        :, ["title", "mean_rating", "totalRatingCount", "correlation"]
+    ]
     # print(expected_output)
 
     return movie_features_df, movie_to_compare, total_ratings, expected_output
