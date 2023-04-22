@@ -1,0 +1,13 @@
+flask
+fuzzywuzzy
+matplotlib
+pandas
+python-Levenshtein
+requests
+seaborn
+scikit-learn
+pytest
+
+
+setuptools
+scipy

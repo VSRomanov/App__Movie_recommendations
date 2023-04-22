@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Recommendation System</title>
+    <style>
+        input {
+            width: 185px;
+        }
+
+        fieldset {
+            border: 1px solid;
+            border-color: #2C2C2C97;
+            border-radius: 2px;
+            padding: 5px;
+            height: 70px;
+            width: 180px;
+        }
+
+        label {
+            display: inline-block;
+            margin-right: 5px;
+            white-space: nowrap;
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #999;
+            transition: 0.2s all linear;
+            margin-right: 1px;
+            position: relative;
+            top: 4px;
+        }
+
+        input[type="radio"]:checked {
+            border: 6px solid #2C2C2CFF;
+        }
+    </style>
+
+</head>
+<body>
+<div class="login">
+    <h1>Movie Recommendation System</h1>
+
+    <!-- Inputs -->
+    <form action="{{url_for('recommend')}}" method="post">
+        Title<br>
+        <input type="text" name="Title" placeholder="Title" required="required"/><br><br>
+
+        Number of movies<br>
+        <input type="text" name="Number of movies" value="20" required="required" border-color="gray"/><br><br>
+
+        <fieldset>
+            <legend>Algorithms</legend>
+            <input type="radio" name="algorithm" value="knn" id="knn" required>
+            <label for="knn">k-Nearest Neighbors</label>
+
+            <input type="radio" name="algorithm" value="corr" id="corr">
+            <label for="corr">Pearson correlation</label>
+        </fieldset>
+        <br><br>
+
+        <button type="submit" class="btn btn-primary btn-block btn-large">Recommend</button>
+    </form>
+
+    <br>
+    <br>
+
+</div>
+{{first_line}}
+<br>
+<br>
+{{final_table|safe}}
+</body>
+</html>
