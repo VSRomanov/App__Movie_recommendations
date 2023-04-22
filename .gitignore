@@ -1,0 +1,10 @@
+.idea
+.pytest_cache
+.venv
+app_data
+build
+dist
+movie_recommendation.egg-info
+raw_data
+requirements_dev.txt
+setup.py
