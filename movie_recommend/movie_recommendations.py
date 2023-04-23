@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # movie_to_compare = 'Jumanji (1995)'
     # movie_to_compare = 'Commando (1985)'
     # movie_to_compare = "Terminator"
-    # movie_to_compare = "The Terminators (2009)"
+    movie_to_compare = "The Terminators (2009)"
     # movie_to_compare = "Terminator, The (1984)"
     # movie_to_compare = 'Rambo: First Blood Part II (1985)'
     # movie_to_compare = 'Rambo: First Blood (1982)'
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     # movie_to_compare = 'Star Wars: Episode VI - Return of the Jedi (1983)'
     # movie_to_compare = 'Puss in Boots (2011)'
     # movie_to_compare = "Brother (Brat) (1997)"
-    movie_to_compare = "Brat"
+    # movie_to_compare = "Brat"
     # movie_to_compare = "Exterminator"
     # movie_to_compare = "Operation 'Y' & Other Shurik's Adventures (1965)"
 

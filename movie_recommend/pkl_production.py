@@ -25,11 +25,11 @@ from movie_recommend.utils.table_formatting import (
 
 if __name__ == "__main__":
     ## Settings: minimum number of ratings per movie, small or full dataset, model type.
-    # num_rating_threshold = 10
-    num_rating_threshold = 250
+    num_rating_threshold = 10
+    # num_rating_threshold = 250
 
-    # dataset_size = "small"
-    dataset_size = "full"
+    dataset_size = "small"
+    # dataset_size = "full"
 
     model_types = ("k-Nearest Neighbors", "Pearson correlation")
 

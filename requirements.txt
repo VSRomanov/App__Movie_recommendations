@@ -2,12 +2,12 @@ flask
 fuzzywuzzy
 matplotlib
 pandas
+pytest
 python-Levenshtein
 requests
 seaborn
 scikit-learn
-pytest
-
+gunicorn
 
 setuptools
 scipy

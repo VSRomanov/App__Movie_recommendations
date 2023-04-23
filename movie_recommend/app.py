@@ -7,10 +7,22 @@ from flask import Flask, jsonify, render_template, request
 from movie_recommend.constants import PKL_DIR
 from movie_recommend.utils.get_recommendations import get_recommendations
 
+# Select the size of the movie database
+dataset_size = "small"
+# dataset_size = "full"
+
+
+if dataset_size == "small":
+    knn_pkl_file = "knn_model_small.pkl"
+    corr_pkl_file = "corr_model_small.pkl"
+elif dataset_size == "full":
+    knn_pkl_file = "knn_model.pkl"
+    corr_pkl_file = "corr_model.pkl"
+
 app = Flask(__name__)
 
 # Load KNN model
-with open(PKL_DIR / "knn_model.pkl", "rb") as f:
+with open(PKL_DIR / knn_pkl_file, "rb") as f:
     try:
         (
             movie_features_df__knn,
@@ -24,7 +36,7 @@ with open(PKL_DIR / "knn_model.pkl", "rb") as f:
         exit()
 
 # Load Pearson correlation model
-with open(PKL_DIR / "corr_model.pkl", "rb") as f:
+with open(PKL_DIR / corr_pkl_file, "rb") as f:
     try:
         movie_features_df__corr, total_ratings, total_movie_array = pickle.load(f)
         # print(movie_features_df__corr)

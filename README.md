@@ -5,7 +5,7 @@
 This project is a Flask app for a movie recommendation system that uses two types of
 [collaborative filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) algorithms based on data of
 similar users. The algorithms used are recommendations by Pearson correlation coefficients and k-Nearest Neighbors
-(KNN) method.
+(KNN) method. The app is deployed at the Heraku cloud (the small dataset):  
 <br><br>
 
 ### MovieLens dataset
@@ -61,19 +61,24 @@ model and features. The app runs in debug mode if executed as the main program.
 
 _/movie_recommend/pkl_production.py_ - script to create pickle files with models and a pre-cleaned movie tables.
 
-_/movie_recommend/app.py_ - script to create a Flask web application that generates movie recommendations using models loaded from pickle
-files.
+_/movie_recommend/app.py_ - script to create a Flask web application that generates movie recommendations using models 
+loaded from pickle files.
 
-_/movie_recommend/constants.py_ - constants used in a scripts.
+_/movie_recommend/constants.py_ - constants used in scripts.
+
+_/movie_recommend/movie_recommendations.py_ - script to get recommendations without API.
 
 _/movie_recommend/ratings_visualisation.py_ - optional script to visualize 'mean_rating' vs 'totalRatingCount' per movie
 (returns png files).
 
-_/movie_recommend/utils/_ - folder with functions used in a scripts.
+_/movie_recommend/utils/_ - folder with functions used in scripts.
 
 _/templates/home.html_ - front-end html file.
 
 _requirements.txt_ - Python packages necessary for the app creation.
+
+_/app_data/_ - folder with pickle files produced by _pkl_production.py_ (small dataset, the threshold for number of 
+ratings per movie is selected as 10). Necessary for the Heroku cloud App.
 
 _/tests/_ - folder with pytest scripts to test the functionality of the functions.
 <br><br>
