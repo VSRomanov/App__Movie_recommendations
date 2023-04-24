@@ -2,10 +2,15 @@
 
 ## Description
 
-This project is a Flask app for a movie recommendation system that uses two types of
-[collaborative filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) algorithms based on data of
-similar users. The algorithms used are recommendations by Pearson correlation coefficients and k-Nearest Neighbors
-(KNN) method. The app is deployed at the Heraku cloud (the small dataset): https://movie-recommendations.herokuapp.com/
+The goal of this project is to develop a Flask app for a movie recommendation system that offers a choice between two 
+[collaborative filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) algorithms based on movie similarities 
+in user ratings. One option is the Pearson correlation coefficient, which measures the linear correlation between vectors 
+of user ratings and recommends movies with similar rating vectors. The other option is the k-Nearest Neighbors (KNN) 
+method, which identifies the k-nearest neighbors of a target movie in a multidimensional space of user ratings using 
+cosine similarity and recommends the closest movie neighbors. Both algorithms have proven to be effective in providing 
+recommendations based on user ratings.
+
+The app is deployed at the Heraku cloud (the "small" dataset): https://movie-recommendations.herokuapp.com/
 <br><br>
 
 ### MovieLens dataset
@@ -13,17 +18,17 @@ similar users. The algorithms used are recommendations by Pearson correlation co
 The system is built on the [MovieLens dataset](https://grouplens.org/datasets/movielens/). At the step of model creation
 (_pkl_production.py_, see below), there are two dataset size options to choose from:
 
-**_Full_**: 27,000,000 ratings and 1,100,000 tag applications applied to 58,000 movies by 280,000 users.
+**_"Full"_**: 27,000,000 ratings and 1,100,000 tag applications applied to 58,000 movies by 280,000 users.
 
-**_Small_**: 100,000 ratings and 3,600 tag applications applied to 9,000 movies by 600 users.
+**_"Small"_**: 100,000 ratings and 3,600 tag applications applied to 9,000 movies by 600 users.
 
 Note: provided numbers are according to 9/2018 update.
 
 <div style="display: flex; justify-content: center;">
-<img src="./output/figures/rating_vs_totalRatingCount_full.png" alt="Full dataset" title="Full dataset" style="width: 45%; margin-right: 10px;"/>
-<img src="./output/figures/rating_vs_totalRatingCount_small.png" alt="Small dataset" title="Small dataset" style="width: 45%; margin-left: 10px;"/>
+<img src="./output/figures/rating_vs_totalRatingCount_full.png" alt="Full dataset" title="Full dataset" style="width: 49%; margin-right: 10px;"/>
+<img src="./output/figures/rating_vs_totalRatingCount_small.png" alt="Small dataset" title="Small dataset" style="width: 49%; margin-left: 10px;"/>
 </div>
-Fig.1: Visualisation of 'mean_rating' vs 'totalRatingCount' per movie of the full and small datasets, respectively. 
+Fig.1: Visualisation of 'mean_rating' vs 'totalRatingCount' per movie of the "full" and "small" datasets, respectively. 
 
 <br>
 <br>
@@ -77,7 +82,7 @@ _/templates/home.html_ - front-end html file.
 
 _requirements.txt_ - Python packages necessary for the app creation.
 
-_/app_data/_ - folder with pickle files produced by _pkl_production.py_ (small dataset, the threshold for number of 
+_/app_data/_ - folder with pickle files produced by _pkl_production.py_ ("small" dataset, the threshold for number of 
 ratings per movie is selected as 10). Necessary for the Heroku cloud App.
 
 _/tests/_ - folder with pytest scripts to test the functionality of the functions.

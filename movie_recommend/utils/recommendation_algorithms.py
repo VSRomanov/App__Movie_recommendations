@@ -151,11 +151,11 @@ def recommendation_corr(
         tuple: A tuple containing the header message (str) and a dataframe containing the recommendations (pandas.DataFrame).
     """
 
-    # Set the minimum number of ratings per movie, depending on the size of the dataset
+    # Set the minimum number of correlating ratings per movie, depending on the size of the dataset
     if len(total_ratings) < 10000:
-        min_num_rating = 20
+        min_num_ratings = 20
     else:
-        min_num_rating = 150
+        min_num_ratings = 150
 
     # Drop rows with NaN values in the specified movie column
     movie_features_df__nonan = movie_features_df.dropna(subset=[movie_to_compare])
@@ -163,7 +163,7 @@ def recommendation_corr(
     # Calculate Pearson correlations between 'movie_to_compare' and other movies
     correlations = (
         movie_features_df__nonan[movie_to_compare].corr(
-            movie_features_df__nonan[col], min_periods=min_num_rating
+            movie_features_df__nonan[col], min_periods=min_num_ratings
         )
         for col in movie_features_df__nonan
     )
@@ -188,10 +188,10 @@ def recommendation_corr(
     )
 
     # A header message for the recommendations
-    if table['correlation'].isna().all():
+    if table["correlation"].isna().all():
         message = f'Not enough ratings for "{movie_to_compare}" to conclude on correlations.\n'
     else:
         message = f'Recommendations for "{movie_to_compare}":'
-        table.dropna(subset=['correlation'], inplace=True)
+        table.dropna(subset=["correlation"], inplace=True)
 
     return message, table
