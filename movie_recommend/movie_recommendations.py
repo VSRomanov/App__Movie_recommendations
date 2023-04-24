@@ -26,14 +26,16 @@ if __name__ == "__main__":
     # movie_to_compare = 'Jumanji (1995)'
     # movie_to_compare = 'Commando (1985)'
     # movie_to_compare = "Terminator"
-    movie_to_compare = "The Terminators (2009)"
+    # movie_to_compare = "The Terminators (2009)"
     # movie_to_compare = "Terminator, The (1984)"
+    # movie_to_compare = "1408 (2007)"
     # movie_to_compare = 'Rambo: First Blood Part II (1985)'
     # movie_to_compare = 'Rambo: First Blood (1982)'
     # movie_to_compare = "First Blood (Rambo: First Blood) (1982)"
     # movie_to_compare = 'Avatar (2009)'
     # movie_to_compare = 'Star Wars'
     # movie_to_compare = "Robot Chicken: Star Wars (2007)"
+    movie_to_compare = "Star Trek (2009)"
     # movie_to_compare = 'Star Wars: Episode VI - Return of the Jedi (1983)'
     # movie_to_compare = 'Puss in Boots (2011)'
     # movie_to_compare = "Brother (Brat) (1997)"
@@ -43,11 +45,21 @@ if __name__ == "__main__":
 
     num_recommendations = 20
 
-    model_type = "knn"
-    # model_type = "corr"
+    # model_type = "knn"
+    model_type = "corr"
+
+    dataset_size = "small"
+    # dataset_size = "full"
+
+    if dataset_size == "small":
+        knn_pkl_file = "knn_model_small.pkl"
+        corr_pkl_file = "corr_model_small.pkl"
+    elif dataset_size == "full":
+        knn_pkl_file = "knn_model.pkl"
+        corr_pkl_file = "corr_model.pkl"
 
     # Load KNN model from .pkl file
-    with open(PKL_DIR / "knn_model.pkl", "rb") as f:
+    with open(PKL_DIR / knn_pkl_file, "rb") as f:
         try:
             (
                 movie_features_df__knn,
@@ -60,7 +72,7 @@ if __name__ == "__main__":
             exit()
 
     # Load dataframe for Pearson correlation algorithm from .pkl file
-    with open(PKL_DIR / "corr_model.pkl", "rb") as f:
+    with open(PKL_DIR / corr_pkl_file, "rb") as f:
         try:
             movie_features_df__corr, total_ratings, total_movie_array = pickle.load(f)
         except Exception as e:

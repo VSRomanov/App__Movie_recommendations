@@ -5,7 +5,7 @@
 This project is a Flask app for a movie recommendation system that uses two types of
 [collaborative filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) algorithms based on data of
 similar users. The algorithms used are recommendations by Pearson correlation coefficients and k-Nearest Neighbors
-(KNN) method. The app is deployed at the Heraku cloud (the small dataset):  
+(KNN) method. The app is deployed at the Heraku cloud (the small dataset): https://movie-recommendations.herokuapp.com/
 <br><br>
 
 ### MovieLens dataset
