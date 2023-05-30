@@ -87,7 +87,7 @@ def recommendation_knn(
     Recommends similar movies to a given movie using k-Nearest Neighbors algorithm.
 
     Args:
-        movie_features_df (pandas.DataFrame): A DataFrame with movie features as columns and movie titles as indices.
+        movie_features_df (pandas.DataFrame): A movie rating dataframe with users as columns and movie titles as indices.
         model (sklearn.neighbors._unsupervised.KNNUnsupervised): A trained k-Nearest Neighbors model.
         movie_to_compare (str): The title of the movie to find similar movies for.
         num_recommendations (int): The number of recommendations to generate.
@@ -142,7 +142,7 @@ def recommendation_corr(
     Recommends top movies based on the Pearson correlation between a specified movie and other movies in the dataset.
 
     Args:
-        movie_features_df (pandas.DataFrame): A dataframe containing movie features.
+        movie_features_df (pandas.DataFrame): A movie rating dataframe with movie titles as columns and users as indices.
         movie_to_compare (str): The title of the movie to compare against.
         num_recommendations (int): The number of recommendations to generate.
         total_ratings (pd.DataFrame): A DataFrame with the total rating count and mean rating per movie.

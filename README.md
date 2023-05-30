@@ -3,12 +3,12 @@
 ## Description
 
 The goal of this project is to develop a Flask app for a movie recommendation system that offers a choice between two 
-[collaborative filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) algorithms based on movie similarities 
-in user ratings. One option is the Pearson correlation coefficient, which measures the linear correlation between vectors 
-of user ratings and recommends movies with similar rating vectors. The other option is the k-Nearest Neighbors (KNN) 
-method, which identifies the k-nearest neighbors of a target movie in a multidimensional space of user ratings using 
-cosine similarity and recommends the closest movie neighbors. Both algorithms have proven to be effective in providing 
-recommendations based on user ratings.
+item-based [collaborative filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) algorithms based on movie 
+similarities in user ratings. One option is the Pearson correlation coefficient, which measures the linear correlation 
+between vectors of user ratings and recommends movies with similar rating vectors. The other option is the k-Nearest 
+Neighbors (KNN) method, which identifies the k-nearest neighbors of a target movie in a multidimensional space of user 
+ratings using cosine similarity and recommends the closest movie neighbors. Both algorithms have proven to be effective 
+in providing recommendations based on user ratings.
 
 The app is deployed at the Heraku cloud (the "small" dataset): https://movie-recommendations.herokuapp.com/
 <br><br>
