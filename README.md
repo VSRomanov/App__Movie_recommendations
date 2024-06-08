@@ -18,11 +18,11 @@ The app is deployed at the Heraku cloud (the "small" dataset): https://movie-rec
 The system is built on the [MovieLens dataset](https://grouplens.org/datasets/movielens/). At the step of model creation
 (_pkl_production.py_, see below), there are two dataset size options to choose from:
 
-**_"Full"_**: 27,000,000 ratings and 1,100,000 tag applications applied to 58,000 movies by 280,000 users.
+**_"Full"_**: 33,800,000 ratings and 2,300,000 tag applications applied to 86,500 movies by 331,000 users.
 
-**_"Small"_**: 100,000 ratings and 3,600 tag applications applied to 9,000 movies by 600 users.
+**_"Small"_**: 100,000 ratings and 3,700 tag applications applied to 9,700 movies by 600 users.
 
-Note: provided numbers are according to 9/2018 update.
+Note: provided numbers are according to 7/2023 update.
 
 <div style="display: flex; justify-content: center;">
 <img src="./output/figures/rating_vs_totalRatingCount_full.png" alt="Full dataset" title="Full dataset" style="width: 49%; margin-right: 10px;"/>

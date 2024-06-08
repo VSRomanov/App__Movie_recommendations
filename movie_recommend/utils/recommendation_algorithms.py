@@ -1,35 +1,21 @@
+import time
 from typing import List, Tuple
 
+import logging
 import pandas as pd
-import sklearn
 from fuzzywuzzy import fuzz
-from scipy.sparse import csr_matrix
 from sklearn.neighbors import NearestNeighbors
+from scipy.sparse import csr_matrix
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def recommendation_rename_movie(
-    movie_to_compare: str,
-    movie_array: List[str],
-    num_recommendations: int,
-    total_ratings: pd.DataFrame,
+    movie_to_compare: str, movie_array: List[str], n_recommend: int, all_ratings: pd.DataFrame
 ) -> Tuple[str, pd.DataFrame]:
-    """
-    Recommends movies based on a partial match to the given movie title and provides
-    similarity scores, total rating count and mean rating per movie.
-
-    Args:
-        movie_to_compare (str): The title of the movie to compare against.
-        movie_array (list): A list of movie titles to search for partial matches.
-        num_recommendations (int): The number of recommendations to generate.
-        total_ratings (pandas.DataFrame): A DataFrame with the total rating count and mean rating per movie.
-
-    Returns:
-        tuple: A tuple containing the first line of the response and a DataFrame with the recommendations.
-    """
-    # Suggest alternative titles based on partial matching
-    message = (
-        f'No "{movie_to_compare}" movie in the database. Try the following titles:'
-    )
+    """Recommends alternative movies based on a given movie title."""
+    message = f'No "{movie_to_compare}" movie in the database. Try the following titles:'
 
     # Remove the year at the end of the movie title (to improve suggestions of alternatives)
     movie_to_compare = movie_to_compare.rstrip("(0123456789)").rstrip()
@@ -39,139 +25,78 @@ def recommendation_rename_movie(
     table_all["similarity_score"] = table_all["title"].apply(
         lambda x: fuzz.partial_ratio(movie_to_compare, x)
     )
-    table = (
-        table_all.sort_values("similarity_score", ascending=False)
-        .reset_index(drop=True)
-        .head(num_recommendations)
-    )
-
-    table = pd.merge(table, total_ratings, on="title")
-
-    table = table.reindex(
-        columns=["title", "mean_rating", "totalRatingCount", "similarity_score"]
-    )
+    table = table_all.sort_values("similarity_score", ascending=False).reset_index(drop=True).head(n_recommend)
+    table = table.merge(all_ratings, on="title")
+    table = table.reindex(columns=["title", "mean_rating", "totalRatingCount", "similarity_score"])
 
     return message, table
 
 
-def knn_train(
-    movie_features_df: pd.DataFrame,
-) -> sklearn.neighbors._unsupervised.NearestNeighbors:
-    """
-    Trains a k-Nearest Neighbors model on a given dataset of movie features using the cosine distance metric.
+def knn_train(features_df: pd.DataFrame) -> NearestNeighbors:
+    """Trains a k-Nearest Neighbors model on a given dataset of movie features using the cosine distance metric."""
+    start_time = time.time()
 
-    Args:
-        movie_features_df (pandas.DataFrame): A DataFrame with movie features as columns and movie titles as indices.
+    logging.info("Training a k-Nearest Neighbors model...")
 
-    Returns:
-        sklearn.neighbors._unsupervised.NearestNeighbors: A k-Nearest Neighbors model trained on the movie features.
-    """
-    # Table as matrix
-    movie_features_df_matrix = csr_matrix(movie_features_df.values)
+    # Convert DataFrame to a sparse matrix
+    movie_features_matrix = csr_matrix(features_df.values)
 
-    # k-NearestNeighbors model
-    model_knn = NearestNeighbors(metric="cosine", algorithm="brute")
-    model_knn.fit(movie_features_df_matrix)
+    # k-Nearest Neighbors model
+    knn_model = NearestNeighbors(metric="cosine", algorithm="brute")
+    knn_model.fit(movie_features_matrix)
 
-    return model_knn
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    logging.info("Done! Time taken to train a k-Nearest Neighbors model: %.2f seconds", elapsed_time)
+
+    return knn_model
 
 
 def recommendation_knn(
-    movie_features_df: pd.DataFrame,
-    model: NearestNeighbors,
-    movie_to_compare: str,
-    num_recommendations: int,
-    total_ratings: pd.DataFrame,
+    features_df: pd.DataFrame, model: NearestNeighbors, movie_to_compare: str, n_recommend: int,
+    total_ratings: pd.DataFrame
 ) -> Tuple[str, pd.DataFrame]:
-    """
-    Recommends similar movies to a given movie using k-Nearest Neighbors algorithm.
-
-    Args:
-        movie_features_df (pandas.DataFrame): A movie rating dataframe with users as columns and movie titles as indices.
-        model (sklearn.neighbors._unsupervised.KNNUnsupervised): A trained k-Nearest Neighbors model.
-        movie_to_compare (str): The title of the movie to find similar movies for.
-        num_recommendations (int): The number of recommendations to generate.
-        total_ratings (pd.DataFrame): A DataFrame with the total rating count and mean rating per movie.
-
-    Returns:
-        tuple: A tuple containing the first line of the response and a DataFrame with the recommendations.
-    """
+    """Recommends similar movies to a given movie using k-Nearest Neighbors algorithm."""
     # Get the index of the movie to compare
-    movie_index = movie_features_df.index.get_loc(movie_to_compare)
+    movie_index = features_df.index.get_loc(movie_to_compare)
 
     # Using 'model', calculate the distances and indices of the k-Nearest Neighbors relative to 'movie_index'
     distances, indices = model.kneighbors(
-        movie_features_df.iloc[movie_index, :].values.reshape(1, -1),
-        n_neighbors=num_recommendations + 1,
+        features_df.iloc[movie_index, :].values.reshape(1, -1),
+        n_neighbors=n_recommend + 1
     )
 
-    # Create a DataFrame containing the recommendations
     table = pd.DataFrame(columns=["title", "distance"])
-    for i in range(0, len(distances.flatten())):
-        if i == 0:
-            # If this is the first recommendation, get a header message
-            message = f'Recommendations for "{movie_to_compare}":'
-        else:
-            # Otherwise, add the recommendation to the DataFrame
-            new_row = pd.DataFrame(
-                [
-                    [
-                        movie_features_df.index[indices.flatten()[i]],
-                        distances.flatten()[i],
-                    ]
-                ],
-                columns=["title", "distance"],
-            )
-            table = pd.concat([table, new_row], axis=0, ignore_index=True)
-
-    table = table.join(total_ratings, on="title")
-    table = table.reindex(
-        columns=["title", "mean_rating", "totalRatingCount", "distance"]
-    )
-
+    for i in range(1, len(distances.flatten())):
+        # Add the recommendation to the DataFrame
+        new_row = pd.DataFrame([[features_df.index[indices.flatten()[i]], distances.flatten()[i]]],
+                               columns=["title", "distance"])
+        table = pd.concat([table, new_row], axis=0, ignore_index=True)
+    table = table.join(total_ratings.set_index('title'), on="title")
+    table = table.reindex(columns=["title", "mean_rating", "totalRatingCount", "distance"])
+    message = f'Recommendations for "{movie_to_compare}":'
     return message, table
 
 
 def recommendation_corr(
-    movie_features_df: pd.DataFrame,
-    movie_to_compare: str,
-    num_recommendations: int,
-    total_ratings: pd.DataFrame,
+    features_df: pd.DataFrame, movie_to_compare: str, n_recommend: int, total_ratings: pd.DataFrame
 ) -> Tuple[str, pd.DataFrame]:
-    """
-    Recommends top movies based on the Pearson correlation between a specified movie and other movies in the dataset.
-
-    Args:
-        movie_features_df (pandas.DataFrame): A movie rating dataframe with movie titles as columns and users as indices.
-        movie_to_compare (str): The title of the movie to compare against.
-        num_recommendations (int): The number of recommendations to generate.
-        total_ratings (pd.DataFrame): A DataFrame with the total rating count and mean rating per movie.
-
-    Returns:
-        tuple: A tuple containing the header message (str) and a dataframe containing the recommendations (pandas.DataFrame).
-    """
+    """Recommends top movies based on the Pearson correlation between a specified movie and other movies in the dataset."""
 
     # Set the minimum number of correlating ratings per movie, depending on the size of the dataset
-    if len(total_ratings) < 10000:
-        min_num_ratings = 20
-    else:
-        min_num_ratings = 150
+    min_num_ratings = 20 if len(total_ratings) < 10000 else 150
 
     # Drop rows with NaN values in the specified movie column
-    movie_features_df__nonan = movie_features_df.dropna(subset=[movie_to_compare])
+    features_df_nonan = features_df.dropna(subset=[movie_to_compare])
 
     # Calculate Pearson correlations between 'movie_to_compare' and other movies
-    correlations = (
-        movie_features_df__nonan[movie_to_compare].corr(
-            movie_features_df__nonan[col], min_periods=min_num_ratings
-        )
-        for col in movie_features_df__nonan
-    )
+    correlations = [
+        features_df_nonan[movie_to_compare].corr(features_df_nonan[col], min_periods=min_num_ratings)
+        for col in features_df_nonan.columns
+    ]
 
     # Combine correlations with column names and sort by correlation coefficient
-    corr_to_my_movie = pd.DataFrame(
-        {"title": movie_features_df__nonan.columns, "correlation": correlations}
-    )
+    corr_to_my_movie = pd.DataFrame({"title": features_df_nonan.columns, "correlation": correlations})
     corr_to_my_movie.sort_values(by="correlation", ascending=False, inplace=True)
 
     # Set the index of the DataFrame to the title column
@@ -182,10 +107,8 @@ def recommendation_corr(
     corr_to_my_movie.reset_index(inplace=True)
 
     # Join the correlation DataFrame with the total_ratings DataFrame and rearrange the columns
-    table = corr_to_my_movie.iloc[:num_recommendations].join(total_ratings, on="title")
-    table = table.reindex(
-        columns=["title", "mean_rating", "totalRatingCount", "correlation"]
-    )
+    table = corr_to_my_movie.iloc[:n_recommend].join(total_ratings.set_index('title'), on="title")
+    table = table.reindex(columns=["title", "mean_rating", "totalRatingCount", "correlation"])
 
     # A header message for the recommendations
     if table["correlation"].isna().all():
